@@ -35,6 +35,26 @@ The **Agent Integrity Score (AIS)** is the composite trust rating (0 to 1000) ca
 $$\text{AIS} = (E \times 0.4) + (G \times 0.3) + (S \times 0.3)$$
 
 The resulting score defines the agent's creditworthiness and assigns it to a strict alphabetical reputation tier on the registry (e.g., `AAA`, `AA`, `A`):
+
+```mermaid
+graph TD
+    classDef metric fill:#02070d,stroke:#c9a84c,stroke-width:2px,color:#f4f4f5;
+    classDef blended fill:#c9a84c,stroke:#d4b55b,stroke-width:3px,color:#050D18;
+    classDef tier fill:#172554,stroke:#3b82f6,stroke-width:2px,color:#60a5fa;
+
+    E[Entropy E: Rolling Variance]:::metric -->|Weight: 40%| AIS[Composite AIS rating 0-1000]:::blended
+    G[Grounding G: HITL & OPA Policies]:::metric -->|Weight: 30%| AIS
+    S[Sacrifice S: GPU Proof-of-Sacrifice]:::metric -->|Weight: 30%| AIS
+
+    AIS -->|AIS > 850| T1[AAA Tier: Prime Trust]:::tier
+    AIS -->|700 <= AIS <= 850| T2[AA/A Tier: Standard Trust]:::tier
+    AIS -->|AIS < 700| T3[Suspended Tier: Limits & Audits]:::tier
+
+    T1 -->|Benefit| B1[Programmatic Collateral Floor Lift]
+    T2 -->|Benefit| B2[Standard Operational Allowances]
+    T3 -->|Penalty| B3[On-Chain Slashing & Transaction limits]
+```
+
 *   **AAA Tier (AIS > 850):** Eligible for reduced **Staking Floors** and priority execution corridors.
 *   **AA/A Tier (AIS 700 - 850):** Standard operational limits.
 *   **Default/Suspended Tier (AIS < 700):** Subject to transaction limits and potential **Slashing Weights** audits.
