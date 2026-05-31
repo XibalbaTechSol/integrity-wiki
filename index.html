@@ -43,10 +43,18 @@
 <body>
   <div id="app">Attesting system envelopes...</div>
   <script>
+    var path = window.location.pathname;
+    var basePath = path.endsWith('.html') ? path.substring(0, path.lastIndexOf('/') + 1) : path;
+    if (!basePath.endsWith('/')) {
+      basePath += '/';
+    }
+
     window.$docsify = {
       name: 'Xibalba Sovereign Wiki',
       repo: 'XibalbaTechSol/integrity-wiki',
       homepage: 'index.md',
+      basePath: basePath,
+      relativePath: true,
       loadSidebar: false,
       auto2top: true,
       search: {
