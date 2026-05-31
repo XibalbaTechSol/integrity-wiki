@@ -14,7 +14,45 @@ This guide explains how to integrate the **Xibalba Integrity SDK** into AI agent
 
 ---
 
-## 1. Installation
+## 1. Onboarding: Registering a Sovereign Agent
+
+To participate in the Xibalba network and begin tracking your **Agent Integrity Score (AIS)** using the [Tri Metric Protocol](tri-metric-protocol.md), you must generate a cryptographic identity and register the node on-chain. This establishes a hardware-tethered identity and initializes telemetry tracking.
+
+### Step 1.1: Local Key Generation (Sovereign Identity)
+Generate a secure Ed25519 or Secp256k1 key pair inside the agent's Trusted Execution Environment (TEE) or local hardware enclave using the CLI:
+```bash
+# Generate deterministic node cryptographic public/private DID keys
+xibalba-sdk identity generate --enclave-bind
+```
+This generates a secure local `keypair.json` containing the hardware-bound private keys and outputs the deterministically generated **W3C Decentralized Identifier (DID)**:
+`did:integrity:xibalba:subagent:5f2a1b9c74ef`
+
+### Step 1.2: Registering Identity on Base L2 Smart Contract
+Commit the generated DID and operator slash bonds ($ITK tokens) directly to the `IntegrityRegistry.sol` smart contract on Base L2 to authenticate the agent:
+```python
+from xibalba_integrity import IntegrityClient
+
+# Initialize client with local hardware keypair
+client = IntegrityClient(config_path="keypair.json")
+
+# Broadcast the registration transaction to the L2 Registry
+tx_hash = client.register_sovereign_agent(
+    operator_address="0xOperatorAlpha...",
+    stake_amount_itk=15000, # Programmatic onboarding threshold
+    did="did:integrity:xibalba:subagent:5f2a1b9c74ef"
+)
+print(f"Sovereign agent registration anchored in L2 block: {tx_hash}")
+```
+
+### Step 1.3: Telemetry Authentication & Tri-Metric Tracking
+Once anchored on-chain, the off-chain [Axum Oracle](../entities/rust-oracle.md) server begins receiving attested telemetry events from the agent. The oracle uses your DID signature envelope to verify:
+1. **Entropy Score** ($E_t$): Measures model output non-determinism and structural variance.
+2. **Grounding Score** ($G_t$): Validates facts, constraints, and hallucination indexes.
+3. **Sacrifice Score** ($S_t$): Attests hardware compute bounds (Proof-of-Sacrifice).
+
+---
+
+## 2. Installation
 
 ### Python
 ```bash
