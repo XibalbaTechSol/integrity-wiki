@@ -11,3 +11,6 @@ __pycache__/
 # Local dev server files
 contact_submissions.jsonl
 .DS_Store
+test_wiki.js
+validate_static.py
+
