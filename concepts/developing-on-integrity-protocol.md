@@ -100,6 +100,6 @@ Below is a curated inventory of high-potential MVPs that developers can bootstra
 ---
 
 ## Related Systems
-- **[BCC SDK Specification](concepts/integrity-protocol-sdk-spec.md):** Get started coding your own BCC commitments.
-- **[Integration Guide](concepts/integration-guide.md):** Connect your agents using our Python/Node middlewares.
-- **[Xibalba Shield Proposal](entities/xibalba-shield-proposal.md):** Discover our commercial pricing, pro forma models, and HIPAA rollout strategy.
+- **[BCC SDK Specification](integrity-protocol-sdk-spec.md):** Get started coding your own BCC commitments.
+- **[Integration Guide](integration-guide.md):** Connect your agents using our Python/Node middlewares.
+- **[Xibalba Shield Proposal](../entities/xibalba-shield-proposal.md):** Discover our commercial pricing, pro forma models, and HIPAA rollout strategy.

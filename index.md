@@ -1,7 +1,7 @@
 # Xibalba Integrity Project Wiki - Index
 
 > Content Catalog & Registry. Every page represents a core component, protocol, or cryptographic parameter of the Integrity Project.
-> Last updated: 2026-05-31 | Total pages: 26
+> Last updated: 2026-05-31 | Total pages: 35
 
 ## Acronym Glossary
 - [ais](concepts/ais.md): Agent Integrity Score (Composite rating, 0-1000)
@@ -9,7 +9,7 @@
 - [did](concepts/did.md): Decentralized Identifier (W3C-compliant hardware-tethered identity)
 - [Mcip](concepts/mcip.md): Model Contextual Integrity Protocol (Secures fluid, agentic GenUI)
 - [phi](concepts/phi.md): Protected Health Information (Sensory provenance and signing)
-- **Vitk**: Voting Power (Non-transferable locked ITK voting credit)
+- [vitk](concepts/vitk.md): Voting Power (Non-transferable locked ITK voting credit)
 - [zkp](concepts/zkp.md): Zero-Knowledge Proof (Math engine for privacy preservation)
 
 ## Entities (Systems & Implementations)
@@ -18,6 +18,9 @@
 - [Xibalba Quant](entities/xibalba-quant.md): Automated, isolated quantitative mean-reverting daemon.
 - [Stablecoin Vault Paymaster](entities/stablecoin-vault-paymaster.md): ERC-4337 stablecoin gas-abstraction billing engine.
 - [Smart Contracts](entities/smart-contracts.md): Comprehensive Solidity core smart contracts (Registry, Anchor, Paymaster, Staking).
+  - [IntegrityRegistry.sol (Source)](entities/integrity-registry-sol.md): Smart contract governing agent identities and compliance stake.
+  - [StateAnchor.sol (Source)](entities/state-anchor-sol.md): Merkle root anchoring registry contract for PostgreSQL Trust Vault.
+  - [AgentMarket.sol (Source)](entities/agent-market-sol.md): AI-Oracle-backed prediction market contract resolving on agent consensus.
 - [Integrity Registry](entities/integrity-registry.md): On-chain staking, onboarding, and economic slashing contract.
 - [State Anchor](entities/state-anchor.md): On-chain Merkle root state anchoring contract.
 - [Rust Oracle](entities/rust-oracle.md): High-performance off-chain Axum verification and telemetry server.

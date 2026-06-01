@@ -22,6 +22,7 @@ These contracts govern the global economic trust loop, staking requirements, and
 
 ### A. `IntegrityRegistry.sol` (Identity & Slashing)
 The core source of truth for onboarding agent identities and managing compliance collateral.
+*   **Solidity Code:** [IntegrityRegistry.sol (Source)](integrity-registry-sol.md)
 *   **Structs:**
     -   `Agent`: `owner` (address), `did` (string), `hardwareFingerprint` (string), `reputation` (uint256), `stake` (uint256), `registeredAt` (uint64), `active` (bool).
     -   `LiquiditySource`: `did` (string), `sourceName` (string), `capitalCommitment` (uint256), `registeredAt` (uint64), `active` (bool).
@@ -33,19 +34,28 @@ The core source of truth for onboarding agent identities and managing compliance
 
 ### B. `StateAnchor.sol` (Merkle State Anchoring)
 Provides high-scale cryptographic inclusion checks, allowing off-chain database states to be verified on-chain in milliseconds.
+*   **Solidity Code:** [StateAnchor.sol (Source)](state-anchor-sol.md)
 *   **Structs:**
     -   `Anchor`: `merkleRoot` (bytes32), `blockHeight` (uint256), `agentCount` (uint256), `anchoredAt` (uint64).
 *   **Key Functions:**
     -   `anchorState(bytes32 merkleRoot, uint256 blockHeight, uint256 agentCount)`: Invoked periodically by the [Rust Oracle](rust-oracle.md) to register the Merkle Root of the PostgreSQL Trust Vault, anchoring off-chain state.
     -   `verifyInclusion(bytes32 leaf, bytes32[] proof, bytes32 root)`: Allows anyone to verify that an agent's AIS score or transaction log existed at the time of anchoring via a standard Merkle inclusion proof.
 
-### C. `TimeWeightedQuadraticStake.sol` (Anti-Sybil Staking)
+### C. `AgentMarket.sol` (AI-Consensus Prediction Market)
+A binary prediction market resolved by the decentralized agent network staking their reputation weights.
+*   **Solidity Code:** [AgentMarket.sol (Source)](agent-market-sol.md)
+*   **Key Functions:**
+    -   `createMarket(string question, uint256 resolutionTime)`: Initializes a new binary prediction market.
+    -   `buyShares(uint256 marketId, bool isYes)`: Standard binary share purchase mechanism.
+    -   `validateEvent(uint256 marketId, bytes32 agentDID, bool voteYes)`: Validates the event outcome, weighting consensus on staked `$ITK`.
+
+### D. `TimeWeightedQuadraticStake.sol` (Anti-Sybil Staking)
 Implements time-hardened bonding and non-linear math to neutralize flash loan exploits and prevent capital-rich cartels from dominating the reputation network.
 *   **Key Controls:**
     -   `MATURITY_EPOCH`: Hardcoded to `30 days`. Newly staked capital yields 0 reputation on Day 1, slowly maturing over a 30-day epoch. This completely neutralizes flash-loan hijack vectors.
     -   `Quadratic Scaling`: Effective reputation is calculated using square-root math (`Math.sqrt`) bounded by a strict `MAX_REPUTATION_CAP`. Whales cannot linearly buy network dominance.
 
-### D. `StablecoinVaultPaymaster.sol` (Gas Abstraction & MEV Protection)
+### E. `StablecoinVaultPaymaster.sol` (Gas Abstraction & MEV Protection)
 Our ERC-4337 custom Paymaster. It handles dynamic gas sponsorship, allowing agents to pay fees in stablecoins (USDC) rather than native gas tokens, and isolates fee conversions asynchronously to prevent sandwich attacks.
 *   **Key Functions:**
     -   `validatePaymasterUserOp`: Pulls the maximum transaction fee (`maxTokenCost`) in stablecoins upfront from the agent's smart wallet using `safeTransferFrom`.
